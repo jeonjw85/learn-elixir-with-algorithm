@@ -1,7 +1,7 @@
 defmodule Mix.Tasks.Algo do
   use Mix.Task
 
-  alias Algorithms.{BubbleSort, Fibonacci, Hanoi, InsertionSort, SelectionSort}
+  alias Algorithms.{BubbleSort, Fibonacci, Hanoi, InsertionSort, MergeSort, SelectionSort}
 
   @shortdoc "정렬, 탐색, 수학 알고리즘을 실행합니다"
   @requirements ["compile"]
@@ -9,7 +9,8 @@ defmodule Mix.Tasks.Algo do
   @sorters %{
     "selection-sort" => SelectionSort,
     "bubble-sort" => BubbleSort,
-    "insertion-sort" => InsertionSort
+    "insertion-sort" => InsertionSort,
+    "merge-sort" => MergeSort
   }
 
   def run(["fibonacci", input]) do
@@ -72,6 +73,7 @@ defmodule Mix.Tasks.Algo do
       mix algo selection-sort [정수 ...]
       mix algo bubble-sort [정수 ...]
       mix algo insertion-sort [정수 ...]
+      mix algo merge-sort [정수 ...]
 
     fibonacci: F(0) = 0, F(1) = 1 기준으로 n번째 값을 출력합니다.
     hanoi: 원판 n개를 A에서 C로 옮기는 순서를 출력합니다.
