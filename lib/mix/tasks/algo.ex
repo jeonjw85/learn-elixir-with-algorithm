@@ -1,7 +1,7 @@
 defmodule Mix.Tasks.Algo do
   use Mix.Task
 
-  alias Algorithms.Fibonacci
+  alias Algorithms.{Fibonacci, Hanoi}
 
   @shortdoc "정렬, 탐색, 수학 알고리즘을 실행합니다"
   @requirements ["compile"]
@@ -11,6 +11,16 @@ defmodule Mix.Tasks.Algo do
     |> parse_number!()
     |> Fibonacci.calculate()
     |> IO.puts()
+  end
+
+  def run(["hanoi", input]) do
+    input
+    |> parse_number!()
+    |> Hanoi.solve()
+    |> Enum.with_index(1)
+    |> Enum.each(fn {{disk, from, to}, step} ->
+      IO.puts("#{step}. 원판 #{disk}: #{from} -> #{to}")
+    end)
   end
 
   def run(args) when args in [[], ["help"], ["--help"]] do
@@ -32,8 +42,10 @@ defmodule Mix.Tasks.Algo do
     """
     사용법:
       mix algo fibonacci <n>
+      mix algo hanoi <n>
 
     fibonacci: F(0) = 0, F(1) = 1 기준으로 n번째 값을 출력합니다.
+    hanoi: 원판 n개를 A에서 C로 옮기는 순서를 출력합니다.
     """
   end
 end
