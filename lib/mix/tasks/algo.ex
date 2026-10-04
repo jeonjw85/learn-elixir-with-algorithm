@@ -6,6 +6,7 @@ defmodule Mix.Tasks.Algo do
     Fibonacci,
     Hanoi,
     InsertionSort,
+    LinearSearch,
     MergeSort,
     QuickSort,
     SelectionSort
@@ -48,6 +49,15 @@ defmodule Mix.Tasks.Algo do
     |> IO.inspect(charlists: :as_lists, limit: :infinity)
   end
 
+  def run(["linear-search", target | inputs]) do
+    target = parse_integer!(target)
+
+    inputs
+    |> parse_numbers!()
+    |> LinearSearch.find(target)
+    |> print_search_result()
+  end
+
   def run(args) when args in [[], ["help"], ["--help"]] do
     IO.puts(usage())
   end
@@ -74,6 +84,9 @@ defmodule Mix.Tasks.Algo do
     Enum.map(inputs, &parse_integer!/1)
   end
 
+  defp print_search_result(nil), do: IO.puts("찾을 수 없습니다.")
+  defp print_search_result(index), do: IO.puts(index)
+
   defp usage do
     """
     사용법:
@@ -84,10 +97,13 @@ defmodule Mix.Tasks.Algo do
       mix algo insertion-sort [정수 ...]
       mix algo merge-sort [정수 ...]
       mix algo quick-sort [정수 ...]
+      mix algo linear-search <찾을 값> [정수 ...]
 
     fibonacci: F(0) = 0, F(1) = 1 기준으로 n번째 값을 출력합니다.
     hanoi: 원판 n개를 A에서 C로 옮기는 순서를 출력합니다.
     정렬: 정수 목록을 오름차순으로 출력합니다.
+    탐색: 찾은 위치를 0부터 시작하는 인덱스로 출력합니다.
+    linear-search: 같은 값이 여러 개면 첫 번째 위치를 출력합니다.
     """
   end
 end
