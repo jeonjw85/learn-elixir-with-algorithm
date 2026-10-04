@@ -11,6 +11,7 @@ defmodule Mix.Tasks.Algo do
     InsertionSort,
     LinearSearch,
     MergeSort,
+    Prime,
     QuickSort,
     SelectionSort
   }
@@ -88,6 +89,13 @@ defmodule Mix.Tasks.Algo do
     |> IO.puts()
   end
 
+  def run(["prime", input]) do
+    input
+    |> parse_integer!()
+    |> Prime.prime?()
+    |> IO.puts()
+  end
+
   def run(args) when args in [[], ["help"], ["--help"]] do
     IO.puts(usage())
   end
@@ -131,6 +139,7 @@ defmodule Mix.Tasks.Algo do
       mix algo binary-search <찾을 값> [정렬된 정수 ...]
       mix algo factorial <n>
       mix algo gcd <정수> <정수>
+      mix algo prime <정수>
 
     fibonacci: F(0) = 0, F(1) = 1 기준으로 n번째 값을 출력합니다.
     hanoi: 원판 n개를 A에서 C로 옮기는 순서를 출력합니다.
@@ -140,6 +149,7 @@ defmodule Mix.Tasks.Algo do
     binary-search: 오름차순 입력이 필요하며, 일치하는 위치 중 하나를 출력합니다.
     factorial: 0 이상의 정수 n의 팩토리얼을 출력합니다.
     gcd: 두 정수의 최대공약수를 출력합니다.
+    prime: 소수이면 true, 아니면 false를 출력합니다.
     """
   end
 end

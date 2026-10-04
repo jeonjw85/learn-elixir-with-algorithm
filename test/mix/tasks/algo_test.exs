@@ -53,6 +53,8 @@ defmodule Mix.Tasks.AlgoTest do
   test "팩토리얼, 최대공약수, 소수 판별 결과를 출력한다" do
     assert capture_io(fn -> Algo.run(["factorial", "5"]) end) == "120\n"
     assert capture_io(fn -> Algo.run(["gcd", "-48", "18"]) end) == "6\n"
+    assert capture_io(fn -> Algo.run(["prime", "29"]) end) == "true\n"
+    assert capture_io(fn -> Algo.run(["prime", "-7"]) end) == "false\n"
   end
 
   test "명령이 없거나 도움말을 요청하면 사용법을 출력한다" do
@@ -62,7 +64,8 @@ defmodule Mix.Tasks.AlgoTest do
       assert output =~ "mix algo fibonacci <n>"
       assert output =~ "mix algo hanoi <n>"
 
-      for command <- @sort_commands ++ ["linear-search", "binary-search", "factorial", "gcd"] do
+      for command <-
+            @sort_commands ++ ["linear-search", "binary-search", "factorial", "gcd", "prime"] do
         assert output =~ "mix algo #{command}"
       end
     end
@@ -89,7 +92,8 @@ defmodule Mix.Tasks.AlgoTest do
       ["binary-search", "1.5", "1"],
       ["binary-search", "1", "abc"],
       ["gcd", "abc", "2"],
-      ["gcd", "2", "abc"]
+      ["gcd", "2", "abc"],
+      ["prime", "3abc"]
     ]
 
     for args <- inputs do
@@ -105,6 +109,7 @@ defmodule Mix.Tasks.AlgoTest do
           ["factorial"],
           ["gcd", "12"],
           ["gcd", "12", "6", "3"],
+          ["prime"],
           ["linear-search"],
           ["binary-search"]
         ] do
