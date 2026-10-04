@@ -32,14 +32,21 @@ defmodule Mix.Tasks.AlgoTest do
 
   test "탐색한 값의 인덱스를 출력한다" do
     assert capture_io(fn -> Algo.run(["linear-search", "8", "3", "8", "8"]) end) == "1\n"
+    assert capture_io(fn -> Algo.run(["binary-search", "8", "3", "5", "8"]) end) == "2\n"
   end
 
   test "탐색할 값이 없으면 안내를 출력한다" do
-    for command <- ["linear-search"] do
+    for command <- ["linear-search", "binary-search"] do
       assert capture_io(fn -> Algo.run([command, "7", "1", "3"]) end) ==
                "찾을 수 없습니다.\n"
 
       assert capture_io(fn -> Algo.run([command, "7"]) end) == "찾을 수 없습니다.\n"
+    end
+  end
+
+  test "정렬되지 않은 이진 탐색 입력을 거부한다" do
+    assert_raise Mix.Error, "이진 탐색에는 오름차순으로 정렬된 정수 목록이 필요합니다.", fn ->
+      Algo.run(["binary-search", "3", "5", "3", "1"])
     end
   end
 
@@ -50,7 +57,7 @@ defmodule Mix.Tasks.AlgoTest do
       assert output =~ "mix algo fibonacci <n>"
       assert output =~ "mix algo hanoi <n>"
 
-      for command <- @sort_commands ++ ["linear-search"] do
+      for command <- @sort_commands ++ ["linear-search", "binary-search"] do
         assert output =~ "mix algo #{command}"
       end
     end
@@ -73,7 +80,9 @@ defmodule Mix.Tasks.AlgoTest do
       ["merge-sort", ""],
       ["quick-sort", "2", "abc"],
       ["linear-search", "abc", "1"],
-      ["linear-search", "1", "abc"]
+      ["linear-search", "1", "abc"],
+      ["binary-search", "1.5", "1"],
+      ["binary-search", "1", "abc"]
     ]
 
     for args <- inputs do
@@ -86,7 +95,8 @@ defmodule Mix.Tasks.AlgoTest do
           ["unknown", "3"],
           ["fibonacci"],
           ["hanoi", "3", "extra"],
-          ["linear-search"]
+          ["linear-search"],
+          ["binary-search"]
         ] do
       assert_raise Mix.Error, ~r/명령을 확인해 주세요/, fn -> Algo.run(args) end
     end

@@ -2,6 +2,7 @@ defmodule Mix.Tasks.Algo do
   use Mix.Task
 
   alias Algorithms.{
+    BinarySearch,
     BubbleSort,
     Fibonacci,
     Hanoi,
@@ -58,6 +59,19 @@ defmodule Mix.Tasks.Algo do
     |> print_search_result()
   end
 
+  def run(["binary-search", target | inputs]) do
+    target = parse_integer!(target)
+    values = parse_numbers!(inputs)
+
+    unless values |> Enum.chunk_every(2, 1, :discard) |> Enum.all?(fn [a, b] -> a <= b end) do
+      Mix.raise("이진 탐색에는 오름차순으로 정렬된 정수 목록이 필요합니다.")
+    end
+
+    values
+    |> BinarySearch.find(target)
+    |> print_search_result()
+  end
+
   def run(args) when args in [[], ["help"], ["--help"]] do
     IO.puts(usage())
   end
@@ -98,12 +112,14 @@ defmodule Mix.Tasks.Algo do
       mix algo merge-sort [정수 ...]
       mix algo quick-sort [정수 ...]
       mix algo linear-search <찾을 값> [정수 ...]
+      mix algo binary-search <찾을 값> [정렬된 정수 ...]
 
     fibonacci: F(0) = 0, F(1) = 1 기준으로 n번째 값을 출력합니다.
     hanoi: 원판 n개를 A에서 C로 옮기는 순서를 출력합니다.
     정렬: 정수 목록을 오름차순으로 출력합니다.
     탐색: 찾은 위치를 0부터 시작하는 인덱스로 출력합니다.
     linear-search: 같은 값이 여러 개면 첫 번째 위치를 출력합니다.
+    binary-search: 오름차순 입력이 필요하며, 일치하는 위치 중 하나를 출력합니다.
     """
   end
 end
