@@ -1,7 +1,7 @@
 defmodule Algorithms.SortingTest do
   use ExUnit.Case, async: true
 
-  @sorters [Algorithms.SelectionSort, Algorithms.BubbleSort]
+  @sorters [Algorithms.SelectionSort, Algorithms.BubbleSort, Algorithms.InsertionSort]
 
   test "빈 목록과 원소 하나를 정렬한다" do
     for sorter <- @sorters, values <- [[], [5]] do
