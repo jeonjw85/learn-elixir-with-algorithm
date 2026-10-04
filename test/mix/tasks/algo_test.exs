@@ -50,6 +50,10 @@ defmodule Mix.Tasks.AlgoTest do
     end
   end
 
+  test "팩토리얼, 최대공약수, 소수 판별 결과를 출력한다" do
+    assert capture_io(fn -> Algo.run(["factorial", "5"]) end) == "120\n"
+  end
+
   test "명령이 없거나 도움말을 요청하면 사용법을 출력한다" do
     for args <- [[], ["help"], ["--help"]] do
       output = capture_io(fn -> Algo.run(args) end)
@@ -57,14 +61,14 @@ defmodule Mix.Tasks.AlgoTest do
       assert output =~ "mix algo fibonacci <n>"
       assert output =~ "mix algo hanoi <n>"
 
-      for command <- @sort_commands ++ ["linear-search", "binary-search"] do
+      for command <- @sort_commands ++ ["linear-search", "binary-search", "factorial"] do
         assert output =~ "mix algo #{command}"
       end
     end
   end
 
   test "음수와 정수가 아닌 입력을 거부한다" do
-    for command <- ["fibonacci", "hanoi"],
+    for command <- ["fibonacci", "hanoi", "factorial"],
         input <- ["-1", "1.5", "3abc", "abc", ""] do
       assert_raise Mix.Error, "n은 0 이상의 정수여야 합니다.", fn ->
         Algo.run([command, input])
@@ -95,6 +99,7 @@ defmodule Mix.Tasks.AlgoTest do
           ["unknown", "3"],
           ["fibonacci"],
           ["hanoi", "3", "extra"],
+          ["factorial"],
           ["linear-search"],
           ["binary-search"]
         ] do
