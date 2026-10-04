@@ -1,10 +1,14 @@
 defmodule Mix.Tasks.Algo do
   use Mix.Task
 
-  alias Algorithms.{Fibonacci, Hanoi}
+  alias Algorithms.{Fibonacci, Hanoi, SelectionSort}
 
   @shortdoc "정렬, 탐색, 수학 알고리즘을 실행합니다"
   @requirements ["compile"]
+
+  @sorters %{
+    "selection-sort" => SelectionSort
+  }
 
   def run(["fibonacci", input]) do
     input
@@ -23,6 +27,15 @@ defmodule Mix.Tasks.Algo do
     end)
   end
 
+  def run([command | inputs]) when is_map_key(@sorters, command) do
+    sorter = Map.fetch!(@sorters, command)
+
+    inputs
+    |> parse_numbers!()
+    |> sorter.sort()
+    |> IO.inspect(charlists: :as_lists, limit: :infinity)
+  end
+
   def run(args) when args in [[], ["help"], ["--help"]] do
     IO.puts(usage())
   end
@@ -38,14 +51,27 @@ defmodule Mix.Tasks.Algo do
     end
   end
 
+  defp parse_integer!(input) do
+    case Integer.parse(input) do
+      {number, ""} -> number
+      _ -> Mix.raise("입력은 정수여야 합니다.")
+    end
+  end
+
+  defp parse_numbers!(inputs) do
+    Enum.map(inputs, &parse_integer!/1)
+  end
+
   defp usage do
     """
     사용법:
       mix algo fibonacci <n>
       mix algo hanoi <n>
+      mix algo selection-sort [정수 ...]
 
     fibonacci: F(0) = 0, F(1) = 1 기준으로 n번째 값을 출력합니다.
     hanoi: 원판 n개를 A에서 C로 옮기는 순서를 출력합니다.
+    정렬: 정수 목록을 오름차순으로 출력합니다.
     """
   end
 end
