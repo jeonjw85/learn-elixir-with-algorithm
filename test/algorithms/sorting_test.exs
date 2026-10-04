@@ -5,7 +5,8 @@ defmodule Algorithms.SortingTest do
     Algorithms.SelectionSort,
     Algorithms.BubbleSort,
     Algorithms.InsertionSort,
-    Algorithms.MergeSort
+    Algorithms.MergeSort,
+    Algorithms.QuickSort
   ]
 
   test "빈 목록과 원소 하나를 정렬한다" do

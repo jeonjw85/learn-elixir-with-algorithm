@@ -5,7 +5,7 @@ defmodule Mix.Tasks.AlgoTest do
 
   alias Mix.Tasks.Algo
 
-  @sort_commands ["selection-sort", "bubble-sort", "insertion-sort", "merge-sort"]
+  @sort_commands ["selection-sort", "bubble-sort", "insertion-sort", "merge-sort", "quick-sort"]
 
   test "피보나치 결과를 출력한다" do
     assert capture_io(fn -> Algo.run(["fibonacci", "10"]) end) == "55\n"
@@ -57,7 +57,8 @@ defmodule Mix.Tasks.AlgoTest do
       ["selection-sort", "1.5"],
       ["bubble-sort", "abc"],
       ["insertion-sort", "3abc"],
-      ["merge-sort", ""]
+      ["merge-sort", ""],
+      ["quick-sort", "2", "abc"]
     ]
 
     for args <- inputs do
